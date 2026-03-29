@@ -18,7 +18,7 @@
 #include "../rules/HSCAI.2.1/VirtualBaseCastCheck.h"
 #include "../rules/HSCAI.2.2/CStyleAndFunctionalCastCheck.h"
 #include "../rules/HSCAI.2.3/ConstCastAwayQualifierRule.h"
-
+#include "../rules/HSCAI.2.5/ReinterpretCastRule.h"
 Analyzer::Analyzer() {}
 
 void Analyzer::registerRules() {
@@ -41,6 +41,8 @@ void Analyzer::registerRules() {
     rules.push_back(std::make_unique<VirtualBaseCastCheck>());
     rules.push_back(std::make_unique<CStyleAndFunctionalCastCheck>());
     rules.push_back(std::make_unique<ConstCastAwayQualifierRule>());
+    rules.push_back(std::make_unique<ReinterpretCastRule>());
+
 }
 
 void Analyzer::setupMatchers() {
