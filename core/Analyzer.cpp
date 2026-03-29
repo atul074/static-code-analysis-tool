@@ -15,6 +15,9 @@
 #include "../rules/HSCAN.3.2/VirtualFunctionDefaultArgsCheck.h"
 #include "../rules/HSCAS.1.1/ExceptionPointerCheck.h"
 #include "../rules/HSCAS.4.1/ExceptionNoexceptCheck.h"
+#include "../rules/HSCAI.2.1/VirtualBaseCastCheck.h"
+#include "../rules/HSCAI.2.2/CStyleAndFunctionalCastCheck.h"
+#include "../rules/HSCAI.2.3/ConstCastAwayQualifierRule.h"
 
 Analyzer::Analyzer() {}
 
@@ -35,7 +38,9 @@ void Analyzer::registerRules() {
     rules.push_back(std::make_unique<VirtualFunctionDefaultArgsCheck>());
     rules.push_back(std::make_unique<ExceptionPointerCheck>());
     rules.push_back(std::make_unique<ExceptionNoexceptCheck>());
-
+    rules.push_back(std::make_unique<VirtualBaseCastCheck>());
+    rules.push_back(std::make_unique<CStyleAndFunctionalCastCheck>());
+    rules.push_back(std::make_unique<ConstCastAwayQualifierRule>());
 }
 
 void Analyzer::setupMatchers() {
