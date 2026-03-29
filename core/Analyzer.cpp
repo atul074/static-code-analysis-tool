@@ -24,6 +24,7 @@
 #include "../rules/HSCAJ.4.1/IfElseMustEndWithElseRule.h"
 #include "../rules/HSCAV.6.2/NoRawNewDeleteRule.h"
 #include "../rules/HSCAV.6.3/NoAdvancedMemoryRule.h"
+#include "../rules/HSCBC.6.3/UseAfterMoveRule.h"
 Analyzer::Analyzer() {}
 
 void Analyzer::registerRules() {
@@ -52,7 +53,7 @@ void Analyzer::registerRules() {
     rules.push_back(std::make_unique<IfElseMustEndWithElseRule>());
     rules.push_back(std::make_unique<NoRawNewDeleteRule>());
     rules.push_back(std::make_unique<NoAdvancedMemoryRule>());
-
+    rules.push_back(std::make_unique<UseAfterMoveRule>());
 }
 
 void Analyzer::setupMatchers() {
