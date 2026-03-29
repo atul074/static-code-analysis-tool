@@ -15,7 +15,7 @@
 #include "../rules/HSCAP.0.2/SelfAssignmentCheck.h"
 #include "../rules/HSCAN.1.2/VirtualInheritanceMismatchCheck.h"
 #include "../rules/HSCAN.3.4/MemberFunctionPointerComparisonCheck.h"
-
+#include "../rules/HSCAR.8.1/FunctionTemplateSpecializationCheck.h"
 
 
 Analyzer::Analyzer() {}
@@ -37,6 +37,7 @@ void Analyzer::registerRules() {
     rules.push_back(std::make_unique<SelfAssignmentCheck>());
     rules.push_back(std::make_unique<VirtualInheritanceMismatchCheck>());
     rules.push_back(std::make_unique<MemberFunctionPointerComparisonCheck>());
+    rules.push_back(std::make_unique<FunctionTemplateSpecializationCheck>());
 }
 
 void Analyzer::setupMatchers() {
