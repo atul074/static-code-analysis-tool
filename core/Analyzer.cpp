@@ -19,6 +19,7 @@
 #include "../rules/HSCAI.2.2/CStyleAndFunctionalCastCheck.h"
 #include "../rules/HSCAI.2.3/ConstCastAwayQualifierRule.h"
 #include "../rules/HSCAI.2.5/ReinterpretCastRule.h"
+#include "../rules/HSCAI.2.6/InvalidCastToPointerRule.h"
 Analyzer::Analyzer() {}
 
 void Analyzer::registerRules() {
@@ -42,7 +43,8 @@ void Analyzer::registerRules() {
     rules.push_back(std::make_unique<CStyleAndFunctionalCastCheck>());
     rules.push_back(std::make_unique<ConstCastAwayQualifierRule>());
     rules.push_back(std::make_unique<ReinterpretCastRule>());
-
+    rules.push_back(std::make_unique<InvalidCastToPointerRule>());
+    
 }
 
 void Analyzer::setupMatchers() {
