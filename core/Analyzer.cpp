@@ -11,7 +11,7 @@
 #include "../rules/HSCAP.1.1/DynamicTypeUsageCheck.h"
 #include "../rules/HSCAP.1.2/BaseInitializationCheck.h"
 #include "../rules/HSCAP.1.3/ExplicitConstructorCheck.h"
-
+#include "../rules/HSCAN.3.1/VirtualSpecifierCheck.h"
 
 Analyzer::Analyzer() {}
 
@@ -28,6 +28,7 @@ void Analyzer::registerRules() {
     rules.push_back(std::make_unique<DynamicTypeUsageCheck>());
     rules.push_back(std::make_unique<BaseInitializationCheck>());
     rules.push_back(std::make_unique<ExplicitConstructorCheck>());
+    rules.push_back(std::make_unique<VirtualSpecifierCheck>());
 }
 
 void Analyzer::setupMatchers() {
