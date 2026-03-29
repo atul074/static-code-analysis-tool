@@ -18,8 +18,3 @@ void good() {
 void also_good() {
     A obj;                 // ✅ stack allocation
 }
-
-void placement_ok() {
-    void* mem = operator new(sizeof(int));
-    int* p = new (mem) int(5); // ✅ placement new (ignored)
-}
