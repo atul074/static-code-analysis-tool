@@ -24,19 +24,24 @@ void VirtualSpecifierCheck::run(const MatchFinder::MatchResult &result) {
     if (!method)
         return;
 
+    const auto *SM = result.SourceManager;
+
+    // Ignore system headers
+    if (SM->isInSystemHeader(method->getLocation()))
+        return;
+
     // Ignore constructors/destructors
     if (isa<CXXConstructorDecl>(method) || isa<CXXDestructorDecl>(method))
         return;
 
     // -----------------------------
-    // Case 1: Method overrides base class function
+    // Case 1: Missing override
     // -----------------------------
     if (method->size_overridden_methods() > 0) {
 
-        // Should use override keyword
         if (!method->hasAttr<OverrideAttr>()) {
             MyDiagnostic::report(
-                *result.SourceManager,
+                *SM,
                 method->getLocation(),
                 name(),
                 "Overriding method should use 'override' specifier"
@@ -45,13 +50,13 @@ void VirtualSpecifierCheck::run(const MatchFinder::MatchResult &result) {
     }
 
     // -----------------------------
-    // Case 2: Method marked override but not actually overriding
+    // Case 2: override but no base method
     // -----------------------------
     if (method->hasAttr<OverrideAttr>() &&
         method->size_overridden_methods() == 0) {
 
         MyDiagnostic::report(
-            *result.SourceManager,
+            *SM,
             method->getLocation(),
             name(),
             "'override' used but method does not override any base class method"
@@ -59,15 +64,15 @@ void VirtualSpecifierCheck::run(const MatchFinder::MatchResult &result) {
     }
 
     // -----------------------------
-    // Case 3: Virtual function without virtual keyword (base class)
+    // Case 3: Base virtual function missing 'virtual'
     // -----------------------------
     if (method->isVirtual() &&
-        method->size_overridden_methods() == 0) {
+        method->size_overridden_methods() == 0 &&
+        method->getParent()->getNumBases() == 0) {
 
-        // First declaration should explicitly use virtual
         if (!method->isVirtualAsWritten()) {
             MyDiagnostic::report(
-                *result.SourceManager,
+                *SM,
                 method->getLocation(),
                 name(),
                 "Base class virtual method should explicitly use 'virtual'"
@@ -76,17 +81,15 @@ void VirtualSpecifierCheck::run(const MatchFinder::MatchResult &result) {
     }
 
     // -----------------------------
-    // Case 4: final used without virtual/override context
+    // Case 4: final on non-virtual
     // -----------------------------
-    if (method->hasAttr<FinalAttr>()) {
+    if (method->hasAttr<FinalAttr>() && !method->isVirtual()) {
 
-        if (!method->isVirtual()) {
-            MyDiagnostic::report(
-                *result.SourceManager,
-                method->getLocation(),
-                name(),
-                "'final' specifier used on non-virtual method"
-            );
-        }
+        MyDiagnostic::report(
+            *SM,
+            method->getLocation(),
+            name(),
+            "'final' specifier used on non-virtual method"
+        );
     }
 }

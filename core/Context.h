@@ -1,8 +1,10 @@
-// Shared info across checks
-
 #pragma once
 
+#include <unordered_set>
+#include <string>
+
 struct Context {
-    // Future:
-    // config, rule enable/disable, shared state
+    std::unordered_set<std::string> enabledRules;
+    std::unordered_set<std::string> disabledRules;
+    bool enableAll = false;
 };

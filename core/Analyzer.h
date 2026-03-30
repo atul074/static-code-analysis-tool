@@ -4,10 +4,11 @@
 #include <vector>
 #include <memory>
 #include "clang/ASTMatchers/ASTMatchFinder.h"
+#include "Context.h"
 
 class Analyzer {
 public:
-    Analyzer();
+    Analyzer(Context& ctx);
 
     void registerRules();
     void setupMatchers();
@@ -17,4 +18,5 @@ public:
 private:
     std::vector<std::unique_ptr<Rule>> rules;
     clang::ast_matchers::MatchFinder finder;
+    Context& context;
 };

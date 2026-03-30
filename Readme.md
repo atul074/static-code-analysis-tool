@@ -98,3 +98,11 @@ cmake -G Ninja \
 ```
 ccache -s
 ```
+# through checks
+# build
+mkdir build && cd build
+cmake -G Ninja ..
+ninja
+
+# run 
+./jargon-master ../tests/VirtualSpecifierCheckTest.cpp -- -std=c++17 
